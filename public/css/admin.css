@@ -1,0 +1,18 @@
+.settings {
+    width: 100%;
+    max-width: 600px;
+    margin: 2em auto;
+    display: table;
+	color: white;
+}
+.row {
+    display: table-row;
+}
+.left,.right {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 2em;
+}
+.left {
+    font-size: 1.5em;
+}

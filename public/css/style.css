@@ -1,0 +1,116 @@
+*
+{
+    margin:0;padding:0;    
+}
+html,body
+{
+    height:100%;
+    width:100%;
+}
+body
+{
+    display:table;
+	  font-family: Tahoma, Arial, sans-serif;
+}
+header
+{
+    width: 100%;
+    background-color:#f8f8f8;
+    display:table-row;
+
+}
+h1 {
+	  padding: 0.5em 0 0.2em 1em;
+	  color:#28333f;
+}
+.menu {
+	  float: right;
+	  padding: 1em 0.5em 1em 1em;
+}
+.menu::after {
+	  content:"";
+    display:block;
+    clear:both;
+}
+.hashtag {
+	  width: 33%; 
+	  float: left;
+	  margin-bottom: 0.3em;
+    font-size: 0.8em;
+}
+.swatch {
+    float: left;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    width: 20px;
+    height: 20px;
+    margin-right: 0.3em;
+}
+.container
+{
+    display:table-row;
+    background-color:#28333f;
+    height:100%;  
+}
+
+.area {
+	  width: 100%;
+	  height: 100%;
+	  position: relative;
+	  overflow: hidden;
+}
+.area a {
+	  -moz-border-radius: 50%;
+	  -webkit-border-radius: 50%;
+	  border-radius: 50%;
+	  -moz-animation: heart 3s infinite;
+	  -webkit-animation: heart 3s infinite;
+	  animation: heart 3s infinite;
+	  position: absolute;
+	  width: 20px;
+	  height: 20px;
+}
+
+@-moz-keyframes heart {
+	  0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(2);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+     opacity: 1;
+    }
+}
+@-webkit-keyframes heart {
+	  0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(2);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+     opacity: 1;
+    }
+}
+@keyframes heart {
+	  0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(2);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+     opacity: 1;
+    }
+}

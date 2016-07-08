@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tweet Visualizer Admin</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/switch.css">
+</head>
+<body>
+
+    <header>
+        <h1>Tweet Visualizer Admin</h1>
+    </header>
+    <div class="container">
+        <div class="settings">
+            {{#each hashtagsToTrack}}
+            <div class="row">
+                <div class="left">#{{this}}</div>
+                <div class="right">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="{{this}}" 
+                            {{#active this ../hashtagsInGroup}} {{#if @active}} checked {{/if}} {{/active}} />
+                        <label class="onoffswitch-label" for="{{this}}"></label>
+                    </div>
+                </div>
+            </div>
+	        {{/each}}
+        </div>
+    </div>
+
+    <script>
+        var pubnubConfig = {
+            subscribe_key: '{{config.pubnub.subscribe_key}}',
+            publish_key: '{{config.pubnub.publish_key}}'
+        };
+        var channelGroup = '{{config.channelGroup}}';
+        var channelUpdates = '{{config.channelUpdates}}';
+    </script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdn.pubnub.com/pubnub-3.15.2.min.js"></script>
+    <script src="js/admin.js"></script>
+
+</body>
+</html>
