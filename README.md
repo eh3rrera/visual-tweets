@@ -14,8 +14,8 @@ This web application shows you how to use channel groups with PubNub's Stream Co
     1. If you change a hashtags, you have to update the `public/css/hashtags.css` file to update the class name for the color too.
 4. Execute `npm install` to download dependencies.
 5. Execute `node app.js` to start the Node.js server.
-6. Go to http://localhost:3000 to visualize the tweets.
-7. Go to http://localhost:3000/admin to control which hastags to show. 
+6. Go to `http://localhost:3000` to visualize the tweets.
+7. Go to `http://localhost:3000/admin` to control which hastags to show. 
 
 # License
 MIT
