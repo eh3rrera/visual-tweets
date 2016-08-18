@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    var pubnub = PUBNUB(pubnubConfig);
+    var pubnub = new PubNub(pubnubConfig);
 
     // Add/Remove a channel from the group and publish an event to notifiy users
     $('input[type="checkbox"]').change(function() {
@@ -17,9 +17,8 @@ $(document).ready(function() {
                         "hashtag": hashtag,
                         "add":  isChecked
                     },
-                    callback : function(m){
-                        console.log(m)
-                    }
+                }, function(m){
+                    console.log(m)
                 });
             }
         });

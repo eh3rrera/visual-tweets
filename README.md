@@ -9,7 +9,7 @@ This web application shows you how to use channel groups with PubNub's Stream Co
 
 # Installation
 1. Clone this repository and `cd` into it.
-2. Edit the `config.js` file to enter your Twitter and PubNub API keys.
+2. Copy `config.sample.js` into a `config.js` file to enter your Twitter and PubNub API keys.
 3. Optionally, in this file you can change the hashtags to be tracked also.
     1. If you change a hashtags, you have to update the `public/css/hashtags.css` file to update the class name for the color too.
 4. Execute `npm install` to download dependencies.

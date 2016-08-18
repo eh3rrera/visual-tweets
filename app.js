@@ -4,7 +4,7 @@ var exphbs  = require('express-handlebars');
 var config = require('./config');
 var Handlebars = require('handlebars');
 var Twit = require('twit');
-var Pubnub = require("pubnub");
+var PubNub = require("pubnub");
 
 var T = new Twit({
 	consumer_key        :  config.twitter.consumer_key,
@@ -13,10 +13,10 @@ var T = new Twit({
 	access_token_secret :  config.twitter.access_token_secret
 });
 
-var pubnub = Pubnub({
-    ssl           : config.pubnub.ssl,  
-    publish_key   : config.pubnub.publish_key,
-    subscribe_key : config.pubnub.subscribe_key
+var pubnub = new PubNub({
+    ssl          : config.pubnub.ssl,  
+    publishKey   : config.pubnub.publish_key,
+    subscribeKey : config.pubnub.subscribe_key
 });
 
 var tagsToTrack = config.hashtagsToTrack.map(function(val) {
@@ -57,48 +57,49 @@ app.use('/admin', adminRoutes);
 app.listen(config.port, function() {
     console.log('Server up and listening on port %d', config.port);
 
-    // Add channels to the group
-    pubnub.channel_group_add_channel({
-        channel_group: config.channelGroup,
-        channel: tagsToTrack,
-        callback: function(m){
-            //console.log(m);
+    pubnub.channelGroups.addChannels(
+        {
+            channels: tagsToTrack,
+            channelGroup: config.channelGroup
+        }, 
+        function (status) {
+            if (status.error) {
+                console.log(JSON.stringify(status));
+            } else {
+                // Get tweets from the hashtags to track
+                var stream = T.stream('statuses/filter', { track: config.hashtagsToTrack })
+                stream.on('tweet', function (tweet) {
+                    var channel = '';
 
-            // Get tweets from the hashtags to track
-            var stream = T.stream('statuses/filter', { track: config.hashtagsToTrack })
-            stream.on('tweet', function (tweet) {
-                var channel = '';
-
-                // Which hashtag the tweet belongs to?
-                for(var index in tweet.entities.hashtags) {
-                    var hashtag = tweet.entities.hashtags[index].text.toLowerCase();
-                    
-                    if(tagsToTrack.indexOf(hashtag) > -1) {
-                        channel = hashtag;
-                        break;
-                    }
-                }
-
-                // Publish tweet data
-                if(channel !== '') {
-                    var obj = {"text": tweet.text, "url": 'https://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str, "hashtag": channel};
-                    //console.log(channel + ': ' + JSON.stringify(obj));
-
-                    pubnub.publish({
-                        channel : channel,
-                        message : obj,
-                        callback : function(m){
-                            console.log(m)
-                        },
-                        error : function(m){
-                            console.log(m)
+                    // Which hashtag the tweet belongs to?
+                    for(var index in tweet.entities.hashtags) {
+                        var hashtag = tweet.entities.hashtags[index].text.toLowerCase();
+                        
+                        if(tagsToTrack.indexOf(hashtag) > -1) {
+                            channel = hashtag;
+                            break;
                         }
-                    });
-                }
-            });
-        },
-        error: function(err){
-            console.log(err);
-        },
-    });
+                    }
+
+                    // Publish tweet data
+                    if(channel !== '') {
+                        var obj = {"text": tweet.text, "url": 'https://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str, "hashtag": channel};
+                        //console.log(channel + ': ' + JSON.stringify(obj));
+
+                        pubnub.publish({
+                            channel : channel,
+                            message : obj,
+                        }, 
+                        function (status, response) {
+                            if (status.error) {
+                                console.log(status);
+                            } else {
+                                //console.log(response);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    );
 });
